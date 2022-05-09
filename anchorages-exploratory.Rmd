@@ -6,25 +6,43 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+anchorages <- read_csv("Anchorage_dataset_organised_2021_Jul_21_FINAL.csv")
+
+```
+```{r map, fig.align = 'center', out.width = "100%", fig.cap = "RCAs and 2018 Vector ROV transects from QGIS", include = FALSE}
+# include a map image that I saved from Lucie of scars
+knitr::include_graphics(here::here("Anchorages_and_Scars.png"))
 ```
 
-## R Markdown
+```{r setup and initial data cleaning, include = FALSE}
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## SETUP -----------
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+#install.packages("tidyverse")
+#install.packages("janitor")
+library(janitor)
+library(tidyverse)
+library(fishualize)
+library(nlme)
+library(reshape2)
+library(vegan)
 
-```{r cars}
-summary(cars)
-```
+# read in csvs
+fish <- read_csv("2018_Vector_fish_with_coords.csv")
+habitat <-read_csv("ROV2018_Vector_SpeciesData.csv")
+status<- read_csv("Station_ID_RCA.csv")
+unique(habitat$Species)
+unique(fish$Species)
+unique(fish$GPS_time)
+duplicated(fish$GPS_time)
 
-## Including Plots
+## FISH OBSERVATIONS DATA CLEANING -----
 
-You can also embed plots, for example:
+head(fish)
+summary(fish)
+head(habitat)
+summary(habitat)
+summary(habitat$Species)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
